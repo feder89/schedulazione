@@ -105,6 +105,9 @@ function showPortateInModalProduzione(portate){
 			text+='<tr><td><input type="checkbox"/></td><td>'
 					+ value.portata
 					+'</td>'
+					+'<td class="d-none">'+value.tavolo+'</td>'
+					+'<td class="d-none">'+value.indice+'</td>'
+					+'<td class="d-none">'+value.idprg+'</td>'
 					+'</tr>';
 		});
           
@@ -250,12 +253,17 @@ $( '#topheader .navbar-nav a' ).on( 'click', function () {
 
 $('#btn-produci-tavolo').on('click', function(e){
 	var prodotti= new Array();
-	$("#modal-prod-table > tbody > tr").each(function( index ) {
-	    var checkbox = $(this).find('input[type="checkbox"]');
+	$('#modal-prod-div > table > tbody > tr').each(function(){
+		var checkbox = $(this).find('input[type="checkbox"]');
 	    if(checkbox[0].checked) {
-	    	prodotti.push($(this).find("td:nth-child(2)").text());
+	    	prodotti.push({
+	    					portata:$(this).find("td:nth-child(2)").text(),
+	    					tavolo: $(this).find("td:nth-child(3)").text(),
+	    					indice: $(this).find("td:nth-child(4)").text(),
+	    					idprg: $(this).find("td:nth-child(5)").text()
+							});
     	}
-	});
+	});	    
 	if(prodotti.length <=0 ) return false;
 	$.ajax({
         type: 'POST',
@@ -263,9 +271,7 @@ $('#btn-produci-tavolo').on('click', function(e){
         dataType: "text",
         timeout: 20000,
         data : {
-            prods: prodotti,
-            tavolo: tavolo,
-            indice: indice
+            prods: prodotti         
         },
         beforeSend: function(){
         },
