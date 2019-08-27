@@ -2,16 +2,20 @@
 	require_once '../include/core.inc.php';
 	$link=connectToDb();
 	$portate=array();
-	if(isset($_POST['tavolo'])  && isset($_POST['indice'])){
-		$tavolo=$_POST['tavolo'];
-		$indice=$_POST['indice'];
+	if(isset($_POST['idprg'])){
+		$idprg=$_POST['idprg'];
 		$query="SELECT * 
 		FROM programmazioneordini 
-		WHERE tavolo=$tavolo AND indice=$indice AND stato = 2";
+		WHERE idprogrammazione=$idprg AND stato = 2";
 
 		$result = mysqli_query($link, $query) or die("#error#".mysqli_error($link));
 	    while ($row = mysqli_fetch_assoc($result)) {
-	    	array_push($portate, array('portata' => $row['portata']));
+			$idx= $row['tavolo']."/".$row['indice'];
+	    	array_push($portate, array(	'portata' => $row['portata'],
+										'tavolo' => $row['tavolo'],
+										'indice' => $row['indice'],
+										'idprg' => $row['idprogrammazione'],
+										'filter' => $idx));
 	    }  
 	}
 

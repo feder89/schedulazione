@@ -14,7 +14,8 @@ $(document).ready(function(){
 	$('#lista-tavoli-produzione').on('click', '.produci', function(){
 		tavolo = $(this).data('tavolo');
 		indice = $(this).data('indice');
-		openModalProduci(tavolo, indice);
+		var idprog = $(this).data('idprg');
+		openModalProduci(idprog);
 	});
 });
 
@@ -25,8 +26,8 @@ function openModal(_tavolo, _indice){
 	$('#modalTavolo').modal('show');
 }
 
-function openModalProduci(_tavolo, _indice){
-	loadTableDataProduzione(_tavolo, _indice);
+function openModalProduci(idprog){
+	loadTableDataProduzione(idprog);
 	$('#modalTavoloProduzione').modal('show');
 }
 
@@ -54,7 +55,7 @@ function loadTableData(tavolo, indice){
     });
 }
 
-function loadTableDataProduzione(tavolo, indice){
+function loadTableDataProduzione(idprg){
 	var portate = new Array();
 	$.ajax({
         type: 'POST',
@@ -62,14 +63,13 @@ function loadTableDataProduzione(tavolo, indice){
         dataType: "json",
         timeout: 20000,
         data : {
-            tavolo: tavolo,
-            indice: indice	
+            idprg : parseInt(idprg)
         },
         success: function(res) {
-            $.each(res, function(index, value) {
+            /*$.each(res, function(index, value) {
             	portate.push( value );
-            });
-            showPortateInModalProduzione(portate);
+            });*/
+            showPortateInModalProduzione(res);
 
         },
         error: function() {
@@ -93,14 +93,23 @@ function showPortateInModal(portate){
 }
 
 function showPortateInModalProduzione(portate){
-	$('#modal-prod-table tbody').empty();
-	$.each(portate, function(index, value) {
+	$('#modal-prod-div').empty();
+	var arrays = _.groupBy(portate, 'filter');
+	$.each(arrays, function(index, arr) {
 	//$('#modal-gest-table').append('<tr><td><input type="checkbox"/></td><td>'+value['nome_portata']+'</td></tr>');
+		$('#modal-prod-div').append('<h4>Tavolo '+index+'</h4>');
+		var text='<table class="table table-sm table-striped" >'
+          +'<thead><tr><th scope="col">Select</th><th scope="col">Portata</th></tr></thead><tbody>';
 		
-    	$('#modal-prod-table tbody').append('<tr><td><input type="checkbox"/></td><td>'
-									+ value.portata
-									+'</td>'
-    								+'</tr>' );
+		$.each(arr, function(i, value){
+			text+='<tr><td><input type="checkbox"/></td><td>'
+					+ value.portata
+					+'</td>'
+					+'</tr>';
+		});
+          
+            
+    	$('#modal-prod-div').append(text+'</tbody></table>');
     });
 }
 
@@ -294,6 +303,22 @@ function getListTables(tavoli, div_id, div_class){
     });
 }
 
+function getListTablesProd(tavoli, div_id, div_class){
+	$('#'+div_id).empty();
+	var arrays=_.groupBy(tavoli, 'idprg');
+	$.each(arrays, function(index, arr) {
+	
+		var text= '<div class="col-md-auto ml-3 mb-3">'+
+					'<button type="button" class="btn btn-primary btn-lg '+div_class+'"'
+                  +'data-idprg="'+index+'">combine n.'+index+'<br />';
+		$.each(arr, function(idx, value){
+			text +=value.tavolo+'/'+value.indice+' ';
+		});
+    	$('#'+div_id).append(text+ '</button>'
+                  +'</div>' );
+    });
+}
+
 function loadTablesToSchedule(){
 	$.ajax({
         type: "GET",
@@ -320,7 +345,7 @@ function loadTablesInProduction(){
         timeout: 4000,
         success:function(response){
             if (response) {
-                getListTables(response, "lista-tavoli-produzione", "produci");
+                getListTablesProd(response, "lista-tavoli-produzione", "produci");
             }
             else {
                 // Process the expected results...

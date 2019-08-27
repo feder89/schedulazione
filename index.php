@@ -95,7 +95,7 @@
 
 <!-- Modal produzione-->
 <div class="modal fade bd-example-modal-xl" id="modalTavoloProduzione" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-xl">
+  <div class="modal-dialog modal-dialog-centered modal-xl modal-dialog-scrollable">
     <div class="modal-content ">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalCenterTitle">Quali portate sono state consegnate? </h5>
@@ -103,18 +103,8 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
-        <table class="table table-sm table-striped" id="modal-prod-table">
-          <thead>
-            <tr>    
-              <th scope="col">Select</th>
-              <th scope="col">Portata</th>
-            </tr>
-          </thead>
-          <tbody>
-            
-          </tbody>
-        </table>
+      <div class="modal-body" id="modal-prod-div">
+        
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Chiudi</button>
@@ -137,6 +127,7 @@
 
   <script src="js/jquery-3.3.1.slim.min.js" ></script>
   <script src="js/popper.min.js" ></script>
+  <script src="js/lodash.min.js" ></script>
   <script src="js/bootstrap.min.js" ></script>
   <script src="js/apri_modal_tavolo_indice.js" ></script>
 </html>

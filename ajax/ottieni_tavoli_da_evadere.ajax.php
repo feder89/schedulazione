@@ -1,14 +1,15 @@
 <?php
   require_once '../include/core.inc.php';
   $link = connectToDb();
-  $query="SELECT DISTINCT tavolo, indice FROM programmazioneordini 
+  $query="SELECT tavolo, indice, idprogrammazione FROM programmazioneordini 
           WHERE stato=2
-          GROUP BY tavolo, indice";
+          GROUP BY tavolo, indice, idprogrammazione
+		  ORDER BY idprogrammazione";
   $tavoli= array();
   if ($result = mysqli_query($link, $query)) {
       while ($row = mysqli_fetch_assoc($result)) {
         $id=$row["tavolo"]."_".$row["indice"];
-        array_push($tavoli, array('tavolo' => $row['tavolo'], 'indice'=>$row['indice']));
+        array_push($tavoli, array('tavolo' => $row['tavolo'], 'indice'=>$row['indice'], 'idprg' => $row['idprogrammazione']));
       }
 
 
