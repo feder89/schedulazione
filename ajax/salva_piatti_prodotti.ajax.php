@@ -9,16 +9,18 @@
 			$indice=$p['indice'];
 			$tavolo=$p['tavolo'];
 			$idprog=$p['idprg'];
+			$num=$p['num'];
 
-			$query = 	"UPDATE programmazioneordini SET stato=3
-						WHERE id=(
-						SELECT prog.id FROM (select * from programmazioneordini) AS prog
+			$query = 	"UPDATE programmazioneordini AS prog SET stato=3
 						WHERE prog.tavolo=$tavolo
 						AND prog.indice=$indice
 						AND prog.portata=$piatto 
 						AND prog.idprogrammazione = $idprog
-						AND stato=2
-						LIMIT 1);" ;
+						AND stato=2" ;
+						/*WHERE id=(
+						SELECT prog.id FROM (select * from programmazioneordini) AS prog
+						
+						LIMIT 1);*/
             if(!esegui_query($link, $query)){
                 mysqli_rollback($link);
                 disconnetti_mysql($link, NULL);

@@ -99,7 +99,10 @@ function showPortateInModalProduzione(portate){
 	//$('#modal-gest-table').append('<tr><td><input type="checkbox"/></td><td>'+value['nome_portata']+'</td></tr>');
 		$('#modal-prod-div').append('<h4>Tavolo '+index+'</h4>');
 		var text='<table class="table table-sm table-striped" >'
-          +'<thead><tr><th scope="col">Select</th><th scope="col">Portata</th></tr></thead><tbody>';
+          +'<thead><tr><th scope="col">Select</th>'
+          				+'<th scope="col">Portata</th>'
+          				+'<th scope="col">Quantità</th>'
+          				+'</tr></thead><tbody>';
 		
 		$.each(arr, function(i, value){
 			text+='<tr><td><input type="checkbox"/></td><td>'
@@ -108,6 +111,7 @@ function showPortateInModalProduzione(portate){
 					+'<td class="d-none">'+value.tavolo+'</td>'
 					+'<td class="d-none">'+value.indice+'</td>'
 					+'<td class="d-none">'+value.idprg+'</td>'
+					+'<td>'+value.nr+'</td>'
 					+'</tr>';
 		});
           
@@ -260,7 +264,8 @@ $('#btn-produci-tavolo').on('click', function(e){
 	    					portata:$(this).find("td:nth-child(2)").text(),
 	    					tavolo: $(this).find("td:nth-child(3)").text(),
 	    					indice: $(this).find("td:nth-child(4)").text(),
-	    					idprg: $(this).find("td:nth-child(5)").text()
+	    					idprg: $(this).find("td:nth-child(5)").text(),
+	    					num: $(this).find("td:nth-child(6)").text()
 							});
     	}
 	});	    

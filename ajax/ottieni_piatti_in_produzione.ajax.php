@@ -4,9 +4,10 @@
 	$portate=array();
 	if(isset($_POST['idprg'])){
 		$idprg=$_POST['idprg'];
-		$query="SELECT * 
+		$query="SELECT *,count(*) as quant 
 		FROM programmazioneordini 
-		WHERE idprogrammazione=$idprg AND stato = 2";
+		WHERE idprogrammazione=$idprg AND stato = 2
+		GROUP BY portata, tavolo, indice";
 
 		$result = mysqli_query($link, $query) or die("#error#".mysqli_error($link));
 	    while ($row = mysqli_fetch_assoc($result)) {
@@ -15,7 +16,8 @@
 										'tavolo' => $row['tavolo'],
 										'indice' => $row['indice'],
 										'idprg' => $row['idprogrammazione'],
-										'filter' => $idx));
+										'filter' => $idx,
+										'nr' => $row['quant']));
 	    }  
 	}
 
