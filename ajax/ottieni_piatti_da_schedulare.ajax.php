@@ -8,7 +8,8 @@
 		$query="SELECT *,count(*) as quant 
 		FROM programmazioneordini 
 		WHERE tavolo=$tavolo AND indice=$indice AND stato < 2
-		GROUP BY portata";
+		GROUP BY portata
+		ORDER BY FIELD(categoria, 'primo','secondo')";
 
 		$result = mysqli_query($link, $query) or die("#error#".mysqli_error($link));
 	    while ($row = mysqli_fetch_assoc($result)) {
