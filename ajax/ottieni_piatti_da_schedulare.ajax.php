@@ -9,7 +9,7 @@
 		FROM programmazioneordini 
 		WHERE tavolo=$tavolo AND indice=$indice AND stato < 2
 		GROUP BY portata
-		order by FIELD(categoria, 'primo','secondo')";
+		ORDER BY FIELD(categoria, 'primo','secondo')";
 
 		$result = mysqli_query($link, $query) or die("#error#".mysqli_error($link));
 	    while ($row = mysqli_fetch_assoc($result)) {
