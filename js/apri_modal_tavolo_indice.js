@@ -111,7 +111,9 @@ function showPortateInModalProduzione(portate){
 					+'<td class="d-none">'+value.tavolo+'</td>'
 					+'<td class="d-none">'+value.indice+'</td>'
 					+'<td class="d-none">'+value.idprg+'</td>'
-					+'<td>'+value.nr+'</td>'
+					+'<td data-quant="'+value.nr+'"><select class="custom-select custom-select-sm" id="quant-portata-prod">'
+					+generateSelectOptions(value.nr)
+					+'</select></td>'
 					+'</tr>';
 		});
           
@@ -260,14 +262,28 @@ $('#btn-produci-tavolo').on('click', function(e){
 	$('#modal-prod-div > table > tbody > tr').each(function(){
 		var checkbox = $(this).find('input[type="checkbox"]');
 	    if(checkbox[0].checked) {
+	    	var val = parseInt($(this).find('td:nth-child(6)').data('quant'),10);
 	    	prodotti.push({
 	    					portata:$(this).find("td:nth-child(2)").text(),
 	    					tavolo: $(this).find("td:nth-child(3)").text(),
 	    					indice: $(this).find("td:nth-child(4)").text(),
 	    					idprg: $(this).find("td:nth-child(5)").text(),
-	    					num: $(this).find("td:nth-child(6)").text()
+	    					num: val
 							});
+    	}else{
+    		var choose=parseInt($(this).find('td:nth-child(6)').find('select').val(),10);
+    		if(choose>0){
+    			prodotti.push({
+    					portata:$(this).find("td:nth-child(2)").text(),
+    					tavolo: $(this).find("td:nth-child(3)").text(),
+    					indice: $(this).find("td:nth-child(4)").text(),
+    					idprg: $(this).find("td:nth-child(5)").text(),
+    					num: choose
+    			});
+    		}
+					
     	}
+    	
 	});	    
 	if(prodotti.length <=0 ) return false;
 	$.ajax({
