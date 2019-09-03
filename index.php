@@ -58,6 +58,12 @@
         <div class="row text-center" id="lista-tavoli-produzione">
         </div>
       </div>
+      <div class="col-lg-2 mt-3" >
+        <div class="row text-center" id="lista-tavoli-produzione">
+          <div class="col text-justify" id="combine-multi"></div>
+        </div>
+        <button type="button" class="btn btn-success mt-3" id="btn-group-combine">Raggruppa Combine</button>
+      </div>
     </div>
   </div>
 

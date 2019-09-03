@@ -1,5 +1,6 @@
 var tavolo;
 var indice;
+var waiting=0;
 $(document).ready(function(){
 	loadTablesToSchedule();
 	loadTablesInProduction();
@@ -206,6 +207,7 @@ $('#btn-schedula-tavoli').on('click', function(e){
 	            	tavoliSchedulati=new Array();
 	            	portateDaSchedulare=new Array();
 	            	$('#table-multiselect').empty();
+	            	waiting =0;
 	            }
 	        },
 	        error: function( jqXHR, textStatus, errorThrown ){
@@ -310,6 +312,7 @@ $('#btn-produci-tavolo').on('click', function(e){
             	$( ".toast-body" ).empty();
             	$( ".toast-body" ).append('Evasione eseguita con successo!');
             	$('.toast').toast('show');
+            	waiting =0;
             }
         }
     });
@@ -333,6 +336,7 @@ function getListTables(tavoli, div_id, div_class){
 function getListTablesProd(tavoli, div_id, div_class){
 	$('#'+div_id).empty();
 	var arrays=_.groupBy(tavoli, 'idprg');
+	var minC=Object.keys(arrays);
 	$.each(arrays, function(index, arr) {
 	
 		var text= '<div class="col-md-auto ml-3 mb-3">'+
@@ -343,7 +347,25 @@ function getListTablesProd(tavoli, div_id, div_class){
 		});
     	$('#'+div_id).append(text+ '</button>'
                   +'</div>' );
+      	
     });
+    addOptionToMultiselect(minC);
+}
+
+function addOptionToMultiselect(data){
+	if(waiting % 6 == 0){
+		$('#combine-multi').empty();
+		if(data.length>2){
+			for (var i = 2; i <data.length; i++) {
+				$('#combine-multi').append('<div class="custom-control custom-checkbox combine-ck">'
+	  								+'<input type="checkbox" class="custom-control-input" id="'+data[i]+'">'
+	  								+'<label class="custom-control-label" for="'+data[i]+'">Combine '+data[i]+'</label>'
+									+'</div>');
+			}
+			
+		}
+	}
+	waiting++;
 }
 
 function loadTablesToSchedule(){
@@ -381,3 +403,50 @@ function loadTablesInProduction(){
 
     });
 }
+
+$('#btn-group-combine').on('click', function(e){
+	var combs=new Array();
+	$('.combine-ck > input').each(function(e){
+		if(this.checked){
+			combs.push(this.id);
+		}
+		
+	});
+	if(combs.length>1){
+		$.ajax({
+	        type: "POST",
+	        url: "ajax/group_combine_update_others.ajax.php",
+	        dataType:"text",
+	        timeout: 10000,
+	        data:{
+	        	combines: combs
+	        },
+	        beforeSend: function(){
+        	},
+	        success: function(result){
+	            var errore = false;
+	            if(stringStartsWith(result, '#error#')) errore=true;
+
+	            if(errore) {
+	            	$( ".toast-body" ).empty();
+	            	$( ".toast-body" ).append('Errore duramte l\'operazione, riprovare!');
+	            	$('.toast').toast('show');
+	            }else {
+	            	$( ".toast-body" ).empty();
+	            	$( ".toast-body" ).append('Raggruppamento combine eseguito con successo!');
+	            	$('.toast').toast('show');
+	            	waiting =0;
+	            	loadTablesInProduction();
+	            }
+	        }
+
+	    });
+	    e.preventDefault();
+        return false;
+	}else{
+		$( ".toast-body" ).empty();
+		$( ".toast-body" ).append('Seleziona almeno 2 combine');
+		$('.toast').toast('show');
+	}
+	
+});
