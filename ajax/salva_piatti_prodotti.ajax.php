@@ -16,7 +16,8 @@
 						AND prog.indice=$indice
 						AND prog.portata=$piatto 
 						AND prog.idprogrammazione = $idprog
-						AND stato=2" ;
+						AND stato=2
+						LIMIT $num" ;
 						/*WHERE id=(
 						SELECT prog.id FROM (select * from programmazioneordini) AS prog
 						
