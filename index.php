@@ -35,6 +35,9 @@
           <li class="nav-item">
             <a class="nav-item nav-link" id="nav-prod" onClick="navProduction();">In produzione</a>   
           </li>      
+          <li class="nav-item">
+            <a class="nav-item nav-link" id="nav-history" onClick="navHistory();">Storico</a>   
+          </li> 
         </ul>
       </div>
     </nav>
@@ -64,6 +67,26 @@
         </div>
         <button type="button" class="btn btn-success mt-3" id="btn-group-combine">Raggruppa Combine</button>
       </div>
+    </div>
+  </div>
+  <div class="container-fluid" id="div-history" style="display: none;">
+    <div class="row text-center">
+      <div class="col text-justify mt-3">
+         <table class="table table-sm table-striped" id="history-table">
+          <thead>
+            <tr>    
+              <th scope="col">ID Combine</th>
+              <th scope="col">Tavolo</th>
+              <th scope="col">Indice</th>
+              <th scope="col">Portata</th>
+              <th scope="col">Quantità</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+          </tbody>
+        </table>
+      </div>    
     </div>
   </div>
 

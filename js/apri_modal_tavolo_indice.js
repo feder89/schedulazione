@@ -241,18 +241,61 @@ function stringStartsWith (string, prefix) {
 function navSchedulation(){
 	var divSched= document.getElementById('div-sched');
 	var divProg= document.getElementById('div-prog');
-
+	var divHistory=document.getElementById('div-history');
 	divSched.style.display = "block";
 	divProg.style.display = "none";
+	divHistory.style.display = "none";
 };
 
 function navProduction(){
 	var divSched= document.getElementById('div-sched');
 	var divProg= document.getElementById('div-prog');
+	var divHistory=document.getElementById('div-history');
 	divSched.style.display = "none";
 	divProg.style.display = "block";
+	divHistory.style.display = "none";
 };
 
+function navHistory(){
+	var divSched= document.getElementById('div-sched');
+	var divProg= document.getElementById('div-prog');
+	var divHistory=document.getElementById('div-history');
+	divSched.style.display = "none";
+	divProg.style.display = "none";
+	divHistory.style.display = "block";
+	loadHistoryProducted();
+};
+
+function loadHistoryProducted(){
+	$('#history-table tbody').empty();
+	$.ajax({
+        type: 'GET',
+        url: "ajax/ottieni_piatti_evasi.ajax.php",
+        dataType: "json",
+        timeout: 20000,
+        beforeSend: function(){
+        },
+
+        success: function(result){
+        	$.each(result, function(i, value){
+				var text='<tr><td>'
+					+ value.idprg
+					+'</td>'
+					+'<td>'+value.tavolo+'</td>'
+					+'<td>'+value.indice+'</td>'
+					+'<td>'+value.portata+'</td>'
+					+'<td>'+value.quantita+'</td>'
+					+'</tr>';
+					$('#history-table  tbody').append(text);
+			});
+            	
+        },
+        error: function() {
+			alert('Errore nella ricezione del dato');
+		}
+    });
+
+}
 
 $( '#topheader .navbar-nav a' ).on( 'click', function () {
 	$( '#topheader .navbar-nav' ).find( 'li.active' ).removeClass( 'active' );
