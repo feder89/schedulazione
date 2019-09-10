@@ -7,19 +7,21 @@
 			
 		$first = (int)current($combs);
 		$last = (int)end($combs);
-		$query = 	"UPDATE programmazioneordini AS prog SET idprogrammazione=$first
-					WHERE prog.idprogrammazione>$first
-					AND prog.idprogrammazione<=$last" ;
+		foreach ($combs as $key => $value) {
+			$query = 	"UPDATE programmazioneordini AS prog SET idprogrammazione=$first
+					WHERE prog.idprogrammazione=$value" ;
 					/*WHERE id=(
 					SELECT prog.id FROM (select * from programmazioneordini) AS prog
 					
 					LIMIT 1);*/
 
-        if(!esegui_query($link, $query)){
-            mysqli_rollback($link);
-            disconnetti_mysql($link, NULL);
-            die("#error#".mysqli_error($link));
-        }
+	        if(!esegui_query($link, $query)){
+	            mysqli_rollback($link);
+	            disconnetti_mysql($link, NULL);
+	            die("#error#".mysqli_error($link));
+	        }
+		}
+		
         $diff=$last-$first;
         $queryUpdate_other="UPDATE programmazioneordini AS prog SET idprogrammazione=(idprogrammazione-$diff)
 					WHERE prog.idprogrammazione>$last";
